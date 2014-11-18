@@ -14,9 +14,6 @@ class TestScheduleInterpreter extends TestCase
     private $interpreter;
 
     /** @var \Mockery\MockInterface */
-    private $cronExpression;
-
-    /** @var \Mockery\MockInterface */
     private $carbon;
 
     /** @var \Mockery\MockInterface */
@@ -28,8 +25,6 @@ class TestScheduleInterpreter extends TestCase
 
         $this->carbon = m::mock('Carbon\Carbon');
         $this->carbon->shouldIgnoreMissing();
-
-        $this->cronExpression = m::mock('Cron\CronExpression');
 
         $this->scheduler = m::mock('Indatus\Dispatcher\Drivers\DateTime\Scheduler');
         $this->scheduler->shouldIgnoreMissing();
