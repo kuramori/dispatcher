@@ -35,9 +35,8 @@ class TestScheduleInterpreter extends TestCase
         $this->scheduler->shouldIgnoreMissing();
 
         $this->interpreter = m::mock('Indatus\Dispatcher\Drivers\DateTime\ScheduleInterpreter[]', [
-                $this->carbon,
                 $this->scheduler,
-                $this->cronExpression
+                $this->carbon
             ]);
     }
 
@@ -45,14 +44,10 @@ class TestScheduleInterpreter extends TestCase
     {
         $this->scheduler->shouldReceive('getScheduleWeek')->andReturn(Scheduler::NONE);
 
-        $cronSchedule = 'cronSchedule';
+        $cronSchedule = '* * * * *';
         $this->scheduler->shouldReceive('getCronSchedule')->andReturn($cronSchedule);
-        $this->cronExpression->shouldReceive('factory')->with($cronSchedule)->once()->andReturnSelf();
 
-        $returnValue = 'dueStatus';
-        $this->cronExpression->shouldReceive('isDue')->once()->andReturn($returnValue);
-
-        $this->assertEquals($returnValue, $this->interpreter->isDue());
+        $this->assertTrue($this->interpreter->isDue());
     }
 
     public function testIsDueWithWeeklyAndCron()
@@ -61,14 +56,10 @@ class TestScheduleInterpreter extends TestCase
         $this->scheduler->shouldReceive('getScheduleMonth')->andReturn(Scheduler::NONE);
         $this->scheduler->shouldReceive('getScheduleWeek')->andReturn(0);
 
-        $cronSchedule = 'cronSchedule';
+        $cronSchedule = '* * * * *';
         $this->scheduler->shouldReceive('getCronSchedule')->andReturn($cronSchedule);
-        $this->cronExpression->shouldReceive('factory')->with($cronSchedule)->once()->andReturnSelf();
-
-        $returnValue = true;
-        $this->cronExpression->shouldReceive('isDue')->once()->andReturn($returnValue);
-
-        $this->assertEquals($returnValue, $this->interpreter->isDue());
+        
+        $this->assertTrue($this->interpreter->isDue());
     }
 
     /** ---- Week tests ---- */
@@ -115,7 +106,7 @@ class TestScheduleInterpreter extends TestCase
     {
         $this->carbon->shouldReceive('format')->with('j')->andReturn(2);
         $this->scheduler->shouldReceive('getScheduleWeek')->andReturn('even');
-        $parser = new ScheduleInterpreter($this->carbon, $this->scheduler, $this->cronExpression);
+        $parser = new ScheduleInterpreter($this->scheduler, $this->carbon);
 
         $this->assertTrue($parser->thisWeek($this->scheduler));
 
@@ -127,7 +118,7 @@ class TestScheduleInterpreter extends TestCase
     {
         $this->carbon->shouldReceive('format')->with('j')->andReturn(3);
         $this->scheduler->shouldReceive('getScheduleWeek')->andReturn('odd');
-        $parser = new ScheduleInterpreter($this->carbon, $this->scheduler, $this->cronExpression);
+        $parser = new ScheduleInterpreter($this->scheduler, $this->carbon);
 
         $this->assertFalse($parser->thisWeek($this->scheduler));
 
