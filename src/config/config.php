@@ -9,5 +9,5 @@
      *                      Scheduler and SchedulerService classes.
      *
      */
-    'driver' => 'dateTime'
+    'driver' => 'DateTime'
 ];
