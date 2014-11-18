@@ -26,7 +26,7 @@ class ScheduleInterpreter
     protected $hour         = null;
     protected $minute       = null;
 
-    public function __construct(Carbon $now, Scheduler $scheduler)
+    public function __construct(Scheduler $scheduler, Carbon $now)
     {
         $this->now = $now;
         $this->scheduler = $scheduler;
