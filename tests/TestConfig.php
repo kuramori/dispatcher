@@ -12,7 +12,7 @@ class TestConfig extends TestCase
 {
     public function testDefaultDriver()
     {
-        $this->assertEquals(Config::get('dispatcher::driver'), 'dateTime');
+        $this->assertEquals(Config::get('dispatcher::driver'), 'DateTime');
     }
 
     public function testDefaultSchedulerClass()
